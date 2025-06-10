@@ -106,6 +106,7 @@ class FeatureExtractor:
     """
     Description: Create a PyTorch feature extractor from a pretrained model 
     """
+
     def __init__(self, model_tag):
         """
         model_tag (str) : A model name as accepted by load_pretraind_model()
@@ -113,16 +114,19 @@ class FeatureExtractor:
         self.model_tag = model_tag
         self.model, weights = load_pretraind_model(model_tag)
         self.preprocessor = weights.transforms()
-        self.train_nodes, self.eval_nodes = get_graph_node_names( self.model)
+        self.train_nodes, self.eval_nodes = get_graph_node_names(self.model)
+
 
     def create(self, fex_tag):  
         """
+        Description : create a feature extractor from internal layer of a pre-trained model
         fex_tag (str) : the name of a layer found in self.train_nodes
         """   
         return_nodes = {fex_tag: "feature_1"}
         self.extractor = create_feature_extractor(self.model, return_nodes=return_nodes)
         self.fex_tag = fex_tag
         _ = self.extractor.eval()
+
 
     def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         dataset = ImageDataset(image_path, self.preprocessor)
@@ -167,36 +171,43 @@ class FeatureExtractor:
 
     def save_full_features(self, featu_path):
         """ 
-        save as npz 
+        Description : save the full 'array shaped' features as npz with a ID timestamp
         """
         # handle if training was killed early
         if len(self.X) == 0:
             self.X = np.concatenate(self.X_li)
             self.N = np.concatenate(self.N_li)
         tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
-        out_name = os.path.join(featu_path, tstmp + 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
-        np.savez(file = out_name, X = self.X, N = self.N)        
+        self.out_name = os.path.join(featu_path, tstmp + 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
+        np.savez(file = self.out_name, X = self.X, N = self.N)        
 
 
-    def reduce_dimension(self, featu_path, n_neigh = 10, reduced_dim = [2,4,8,16,32]):
+    def reduce_dimension(self, npzfile_full_path = None, n_neigh = 10, reduced_dim = [2,4,8,16,32]):
         """
-        
+        Description : Load full 'array shaped' features from npz, dim-reduce with UMAP, and save as npz file with same ID timestamp
         """
-        # get list of all available full feature arrays
-        li = [a for a in os.listdir(featu_path) if 'full_features_' in a]
-        # loop over full feature array and several values of dimred 
-        for file_name_in in li:
-            npzfile_full_path = os.path.join(featu_path, file_name_in)
-            npzfile = np.load(npzfile_full_path)
-            X = npzfile['X']
-            N = npzfile['N']
-            # make 2d feats needed for plot 
-            X_2D  = dim_reduce(X, n_neigh, 2)
-            for n_dims_red in reduced_dim:
-                X_red = dim_reduce(X, n_neigh, n_dims_red)
-                print(X.shape, X_red.shape, X_2D.shape, N.shape)
-                # save as npz
-                tag_dim_red = "dimred_" + str(n_dims_red) + "_neigh_" + str(n_neigh) + "_"
-                file_name_out = tag_dim_red + '_'.join(file_name_in.split('_')[4:])
-                out_name = os.path.join(featu_path, file_name_out)
-                np.savez(file = out_name, X_red = X_red, X_2D = X_2D, N = N)
+        # take in-class path to npz file if none provided via arguments 
+        if npzfile_full_path == None:
+            npzfile_full_path = self.out_name
+        # separate path and file name
+        file_name_in = os.path.basename(npzfile_full_path)  
+        featu_path = os.path.dirname(npzfile_full_path)   
+        # process 
+        npzfile = np.load(npzfile_full_path)
+        X = npzfile['X']
+        N = npzfile['N']
+        # make 2d feats needed for plot 
+        X_2D  = dim_reduce(X, n_neigh, 2)
+        for n_dims_red in reduced_dim:
+            X_red = dim_reduce(X, n_neigh, n_dims_red)
+            print(X.shape, X_red.shape, X_2D.shape, N.shape)
+            # save as npz
+            tag_dim_red = "dimred_" + str(n_dims_red) + "_neigh_" + str(n_neigh) + "_"
+            file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
+            out_name = os.path.join(featu_path, file_name_out)
+            np.savez(file = out_name, X_red = X_red, X_2D = X_2D, N = N)
+
+
+
+
+
