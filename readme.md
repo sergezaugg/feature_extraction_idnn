@@ -1,10 +1,10 @@
 
-# CLUSTER SPECTROGRAMS WITH DNN FEATURES AND DIM REDUCTION
+# Extract features from spectrograms with pre-trained image DNNs and dim-reduction 
 
 ### Overview 
-* This codebase has two parts: 
-* The **backend code** to pre-compute features from spectrogram images (to be stored in a public Kaggle dataset)
-* The **frontend code** that uses the pre-computed features to feed a Streamlit dashboard 
+* aaa
+* ffffff
+* aaaaaa
 
 ### Source data
 * Acoustic recordings are from [xeno-canto](https://xeno-canto.org/)
@@ -21,18 +21,9 @@
 * Full and reduced-dim features as stored as NPZ files
 * NPZ file are then stored on a Kaggle dataset [example](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01) where the frontend will fetch them.
 
-### Frontend code
-* This is a Streamlit dashboard to cluster-analyse images of spectrograms
-* Features were pre-extracted from images offline (see above)
-* Third, the Streamlit process in started ```streamlit run st_dashboard/stmain.py``` (e.g. locally of on https://share.streamlit.io)
-* The path to Kaggle dataset must be adjusted in the Streamlit code.
-* Thats all, now the dashboard is active.
-* See the deployed version [here](https://spectrogram-image-clustering.streamlit.app)
-
 ### Dependencies / Intallation
 * Developed under Python 3.12.8
 * Make a fresh venv!
-* For Streamlit deployment only
 ```bash 
 pip install -r requirements.txt
 ```
@@ -42,10 +33,5 @@ pip install -r requirements.txt
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
-
-
-### Machine Learning
-* Please find detes [here](https://spectrogram-image-clustering.streamlit.app/page01)
-
 
 
