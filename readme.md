@@ -2,9 +2,8 @@
 # Extract features from spectrograms with pre-trained image DNNs and dim-reduction 
 
 ### Overview 
-* aaa
-* ffffff
-* aaaaaa
+* to be written ...
+
 
 ### Source data
 * Acoustic recordings are from [xeno-canto](https://xeno-canto.org/)
@@ -34,4 +33,9 @@ pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu12
 ```
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
+
+
+### ML details
+
+![](pics/spectro_imDNN_data_flow.png)
 
