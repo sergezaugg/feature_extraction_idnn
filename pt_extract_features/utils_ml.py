@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import numpy as np
 import torch
+import datetime
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
@@ -84,6 +85,23 @@ def load_pretraind_model(model_tag):
     return(model, weights)    
 
 
+def dim_reduce(X, n_neigh, n_dims_red):
+    """
+    UMAP dim reduction for clustering
+    """
+    scaler = StandardScaler()
+    reducer = umap.UMAP(
+        n_neighbors = n_neigh, 
+        n_components = n_dims_red, 
+        metric = 'euclidean',
+        n_jobs = -1
+        )
+    X_scaled = scaler.fit_transform(X)
+    X_trans = reducer.fit_transform(X_scaled)
+    X_out = scaler.fit_transform(X_trans)
+    return(X_out)
+
+
 class FeatureExtractor:
     """
     Description: Create a PyTorch feature extractor from a pretrained model 
@@ -99,27 +117,20 @@ class FeatureExtractor:
 
     def create(self, fex_tag):  
         """
-        fex_tag (str) : the name of a layer foud in self.train_nodes
+        fex_tag (str) : the name of a layer found in self.train_nodes
         """   
         return_nodes = {fex_tag: "feature_1"}
         self.extractor = create_feature_extractor(self.model, return_nodes=return_nodes)
         self.fex_tag = fex_tag
         _ = self.extractor.eval()
 
-
-
-
-  
-  
-
-
-
-
     def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
         self.X_li = [] # features
         self.N_li = [] # file Nanes
+        self.X = []
+        self.N = []
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
             print('Feature layer:', self.fex_tag )
@@ -154,18 +165,38 @@ class FeatureExtractor:
         self.N = np.concatenate(self.N_li)
 
 
-def dim_reduce(X, n_neigh, n_dims_red):
-    """
-    UMAP dim reduction for clustering
-    """
-    scaler = StandardScaler()
-    reducer = umap.UMAP(
-        n_neighbors = n_neigh, 
-        n_components = n_dims_red, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X_scaled = scaler.fit_transform(X)
-    X_trans = reducer.fit_transform(X_scaled)
-    X_out = scaler.fit_transform(X_trans)
-    return(X_out)
+    def save_full_features(self, featu_path):
+        """ 
+        save as npz 
+        """
+        # handle if training was killed early
+        if len(self.X) == 0:
+            self.X = np.concatenate(self.X_li)
+            self.N = np.concatenate(self.N_li)
+        tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
+        out_name = os.path.join(featu_path, tstmp + 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
+        np.savez(file = out_name, X = self.X, N = self.N)        
+
+
+    def reduce_dimension(self, featu_path, n_neigh = 10, reduced_dim = [2,4,8,16,32]):
+        """
+        
+        """
+        # get list of all available full feature arrays
+        li = [a for a in os.listdir(featu_path) if 'full_features_' in a]
+        # loop over full feature array and several values of dimred 
+        for file_name_in in li:
+            npzfile_full_path = os.path.join(featu_path, file_name_in)
+            npzfile = np.load(npzfile_full_path)
+            X = npzfile['X']
+            N = npzfile['N']
+            # make 2d feats needed for plot 
+            X_2D  = dim_reduce(X, n_neigh, 2)
+            for n_dims_red in reduced_dim:
+                X_red = dim_reduce(X, n_neigh, n_dims_red)
+                print(X.shape, X_red.shape, X_2D.shape, N.shape)
+                # save as npz
+                tag_dim_red = "dimred_" + str(n_dims_red) + "_neigh_" + str(n_neigh) + "_"
+                file_name_out = tag_dim_red + '_'.join(file_name_in.split('_')[4:])
+                out_name = os.path.join(featu_path, file_name_out)
+                np.savez(file = out_name, X_red = X_red, X_2D = X_2D, N = N)
