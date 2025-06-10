@@ -11,6 +11,8 @@ import datetime
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
+import plotly.express as px
+from sklearn.model_selection import train_test_split
 import umap.umap_ as umap
 import skimage.measure
 from torchvision.models.feature_extraction import create_feature_extractor
@@ -179,9 +181,31 @@ class FeatureExtractor:
             self.N = np.concatenate(self.N_li)
         tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
         self.out_name = os.path.join(featu_path, tstmp + 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
-        np.savez(file = self.out_name, X = self.X, N = self.N)        
+        np.savez(file = self.out_name, X = self.X, N = self.N)   
 
 
+    def plot_full_features(self, npzfile_full_path = None, n=50):  
+        """
+        Description : 
+        """ 
+        if npzfile_full_path == None:
+            npzfile_full_path = self.out_name
+        npzfile = np.load(os.path.join(npzfile_full_path))
+        X = npzfile['X']
+        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
+        return(px.scatter(data_frame = XS.T))     
+    
+
+    def plot_reduced_features(self, npzfile_reduced_path = None, n=50):  
+        """
+        Description : 
+        """ 
+        npzfile = np.load(os.path.join(npzfile_reduced_path))
+        X = npzfile['X_red']
+        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
+        return(px.scatter(data_frame = XS.T))     
+   
+        
     def reduce_dimension(self, npzfile_full_path = None, n_neigh = 10, reduced_dim = [2,4,8,16,32]):
         """
         Description : Load full 'array shaped' features from npz, dim-reduce with UMAP, and save as npz file with same ID timestamp
