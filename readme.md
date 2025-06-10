@@ -1,18 +1,17 @@
 
 # Extract features from spectrograms with pre-trained image DNNs and dim-reduction 
 
-### Overview 
-* to be written ...
-
-
-### Source data
+### Overview
+* Extract array features from inner layers of pre-trained image DNNs
+* Transform array to linear features.
+* Dim reduce the linear features with UMAP
 * Acoustic recordings are from [xeno-canto](https://xeno-canto.org/)
 * Standardized acoustic data preparation was performed with [this tool](https://github.com/sergezaugg/xeno_canto_organizer)  
 * In a nutshell: MP3 converted to WAVE, resampled, transformed to spectrograms, and stored as RGB images.
-* Images can then be fed into the backend code for feature extractions
+* Images are then processed with the Class provided here for feature extractions
+* Extracted and dim-reduced features are meant to be used in companion [project](https://github.com/sergezaugg/spectrogram_image_clustering) and its [frontend](https://spectrogram-image-clustering.streamlit.app/)
 
-### Backend code
-* Backend code is for feature extraction and dim-reduction 
+### Usage
 * Code is in this subdir ```./pt_extract_features```
 * Main functionality is in this module: ```utils_ml```
 * Short example in ```main.py```
@@ -26,16 +25,13 @@
 ```bash 
 pip install -r requirements.txt
 ```
-* For feature extraction you also need to install **torch** and **torchvision**
+* **torch** and **torchvision** must also be installed
 * This code was developed under Windows with CUDA 12.6 and Python 3.12.8 
 ```bash 
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
-
-
 ### ML details
-
 ![](pics/spectro_imDNN_data_flow.png)
 
