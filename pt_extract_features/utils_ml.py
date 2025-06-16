@@ -46,14 +46,18 @@ class ImageDataset(Dataset):
         return (len(self.all_img_files))
     
 
-  
-
-
-
-
 class FeatureExtractor:
     """
     """
+
+    def __init__(self, model_tag):
+        """
+        """
+        self.model_tag = model_tag
+        self.model, weights = self._load_pretraind_model(model_tag)
+        self.preprocessor = weights.transforms()
+        self.train_nodes, self.eval_nodes = get_graph_node_names(self.model)
+
 
     def _load_pretraind_model(self, model_tag):
         """
@@ -96,7 +100,6 @@ class FeatureExtractor:
         return(model, weights)  
 
 
-
     def _dim_reduce(self, X, n_neigh, n_dims_red):
         """
         """
@@ -113,23 +116,8 @@ class FeatureExtractor:
         return(X_out)
     
 
-
-
-
-    def __init__(self, model_tag):
-        """
-        
-        """
-        self.model_tag = model_tag
-        self.model, weights = self._load_pretraind_model(model_tag)
-        self.preprocessor = weights.transforms()
-        self.train_nodes, self.eval_nodes = get_graph_node_names(self.model)
-
-
     def create(self, fex_tag):  
         """
-        Description : create a feature extractor from internal layer of a pre-trained model
-        fex_tag (str) : the name of a layer found in self.train_nodes
         """   
         return_nodes = {fex_tag: "feature_1"}
         self.extractor = create_feature_extractor(self.model, return_nodes=return_nodes)
@@ -138,6 +126,8 @@ class FeatureExtractor:
 
 
     def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
+        """
+        """
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
         self.X_li = [] # features
@@ -185,7 +175,6 @@ class FeatureExtractor:
 
     def save_full_features(self):
         """ 
-        Description : Save the full 'array shaped' features as npz with an ID timestamp
         """
         # handle if training was killed early
         self.X = np.concatenate(self.X_li)
@@ -195,21 +184,8 @@ class FeatureExtractor:
         np.savez(file = self.out_name, X = self.X, N = self.N)   
 
 
-    def plot_full_features(self, npzfile_full_path = None, n=50):  
-        """
-        Description : 
-        """ 
-        if npzfile_full_path == None:
-            npzfile_full_path = self.out_name
-        npzfile = np.load(os.path.join(npzfile_full_path))
-        X = npzfile['X']
-        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
-        return(px.scatter(data_frame = XS.T, title = npzfile_full_path))     
-    
-    
     def reduce_dimension(self, npzfile_full_path = None, n_neigh = 10, reduced_dim = 8):
         """
-        Description : Load full 'array shaped' features from npz, dim-reduce with UMAP, and save as npz file with same ID timestamp
         """
         # take in-class path to npz file if none provided via arguments 
         if npzfile_full_path == None:
@@ -231,9 +207,19 @@ class FeatureExtractor:
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 
 
+    def plot_full_features(self, npzfile_full_path = None, n=50):  
+        """
+        """ 
+        if npzfile_full_path == None:
+            npzfile_full_path = self.out_name
+        npzfile = np.load(os.path.join(npzfile_full_path))
+        X = npzfile['X']
+        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
+        return(px.scatter(data_frame = XS.T, title = npzfile_full_path))     
+    
+
     def plot_reduced_features(self, npzfile_reduced_path = None, n=50):  
         """
-        Description : 
         """ 
         if npzfile_reduced_path == None:
             npzfile_reduced_path = self.out_name_reduced
