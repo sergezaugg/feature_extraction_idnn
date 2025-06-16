@@ -1,14 +1,11 @@
 
 # Extract features from spectrograms with pre-trained image DNNs and dim-reduction 
 
-
 ### Table of Contents
 * [Overview](#Overview)
 * [Intallation](#Intallation)
-* [Configuration](#Configuration)
 * [Usage](#Usage)
 * [ML details](#ML-details)
-
 
 ### Overview
 * Intended for acoustic recordings from [xeno-canto](https://xeno-canto.org/)
@@ -30,14 +27,11 @@
 * ```pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126```
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
-### Configuration
-
 ### Usage
 * Code is in this subdir ```./pt_extract_features```
 * Main functionality called via a single class **FeatureExtractor** defined is in ```utils_ml.py```
 * Short example: ```main.py```
 * Full example: ```history.py```
-
 
 ### ML details
 <img src="pics/spectro_imDNN_data_flow.png" alt="Example image" width="600"/>
