@@ -46,83 +46,78 @@ class ImageDataset(Dataset):
         return (len(self.all_img_files))
     
 
-def load_pretraind_model(model_tag):
-    """
-    """
-    if model_tag == "ResNet50":
-        from torchvision.models import resnet50, ResNet50_Weights
-        weights = ResNet50_Weights.IMAGENET1K_V2
-        model = resnet50(weights=weights)
-    elif model_tag == "DenseNet121":
-        from torchvision.models import densenet121, DenseNet121_Weights 
-        weights = DenseNet121_Weights.IMAGENET1K_V1
-        model = densenet121(weights=weights)
-    elif model_tag == "MobileNet_V3_Large":
-        from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
-        weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
-        model = mobilenet_v3_large(weights=weights)
-    elif model_tag == "MobileNet_randinit":
-        from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
-        weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
-        model = mobilenet_v3_large(weights=None)
-    elif model_tag == "vgg16":
-        from torchvision.models import vgg16, VGG16_Weights
-        weights = VGG16_Weights.IMAGENET1K_V1
-        model = vgg16(weights=weights)
-    # Transformers 
-    elif model_tag == "Vit_b_16":
-        from torchvision.models import vit_b_16, ViT_B_16_Weights
-        weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
-        model = vit_b_16(weights=weights)
-    elif model_tag == "MaxVit_T":
-        from torchvision.models import maxvit_t, MaxVit_T_Weights  
-        weights = MaxVit_T_Weights.IMAGENET1K_V1     
-        model = maxvit_t(weights=weights)  
-    elif model_tag == "Swin_S":
-        from torchvision.models import swin_s, Swin_S_Weights
-        weights = Swin_S_Weights.IMAGENET1K_V1
-        model = swin_s(weights=weights)
-    else:
-        print("not a valid model_tag")
-    return(model, weights)    
-
-
-def dim_reduce(X, n_neigh, n_dims_red):
-    """
-    UMAP dim reduction for clustering
-    """
-    scaler = StandardScaler()
-    reducer = umap.UMAP(
-        n_neighbors = n_neigh, 
-        n_components = n_dims_red, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X_scaled = scaler.fit_transform(X)
-    X_trans = reducer.fit_transform(X_scaled)
-    X_out = scaler.fit_transform(X_trans)
-    return(X_out)
-
-
 class FeatureExtractor:
     """
-    Description: Create a PyTorch feature extractor from a pretrained model 
     """
 
     def __init__(self, model_tag):
         """
-        model_tag (str) : A model name as accepted by load_pretraind_model()
         """
         self.model_tag = model_tag
-        self.model, weights = load_pretraind_model(model_tag)
+        self.model, weights = self._load_pretraind_model(model_tag)
         self.preprocessor = weights.transforms()
         self.train_nodes, self.eval_nodes = get_graph_node_names(self.model)
 
 
+    def _load_pretraind_model(self, model_tag):
+        """
+        """
+        if model_tag == "ResNet50":
+            from torchvision.models import resnet50, ResNet50_Weights
+            weights = ResNet50_Weights.IMAGENET1K_V2
+            model = resnet50(weights=weights)
+        elif model_tag == "DenseNet121":
+            from torchvision.models import densenet121, DenseNet121_Weights 
+            weights = DenseNet121_Weights.IMAGENET1K_V1
+            model = densenet121(weights=weights)
+        elif model_tag == "MobileNet_V3_Large":
+            from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
+            weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
+            model = mobilenet_v3_large(weights=weights)
+        elif model_tag == "MobileNet_randinit":
+            from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
+            weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
+            model = mobilenet_v3_large(weights=None)
+        elif model_tag == "vgg16":
+            from torchvision.models import vgg16, VGG16_Weights
+            weights = VGG16_Weights.IMAGENET1K_V1
+            model = vgg16(weights=weights)
+        # Transformers 
+        elif model_tag == "Vit_b_16":
+            from torchvision.models import vit_b_16, ViT_B_16_Weights
+            weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
+            model = vit_b_16(weights=weights)
+        elif model_tag == "MaxVit_T":
+            from torchvision.models import maxvit_t, MaxVit_T_Weights  
+            weights = MaxVit_T_Weights.IMAGENET1K_V1     
+            model = maxvit_t(weights=weights)  
+        elif model_tag == "Swin_S":
+            from torchvision.models import swin_s, Swin_S_Weights
+            weights = Swin_S_Weights.IMAGENET1K_V1
+            model = swin_s(weights=weights)
+        else:
+            print("not a valid model_tag")
+        return(model, weights)  
+
+
+    def _dim_reduce(self, X, n_neigh, n_dims_red):
+        """
+        """
+        scaler = StandardScaler()
+        reducer = umap.UMAP(
+            n_neighbors = n_neigh, 
+            n_components = n_dims_red, 
+            metric = 'euclidean',
+            n_jobs = -1
+            )
+        X_scaled = scaler.fit_transform(X)
+        X_trans = reducer.fit_transform(X_scaled)
+        X_out = scaler.fit_transform(X_trans)
+        return(X_out)
+    
+
     def create(self, fex_tag):  
         """
-        Description : create a feature extractor from internal layer of a pre-trained model
-        fex_tag (str) : the name of a layer found in self.train_nodes
         """   
         return_nodes = {fex_tag: "feature_1"}
         self.extractor = create_feature_extractor(self.model, return_nodes=return_nodes)
@@ -130,14 +125,16 @@ class FeatureExtractor:
         _ = self.extractor.eval()
 
 
-    def extract(self, image_path, featu_path, freq_pool, batch_size, n_batches = 2):
+    def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
+        """
+        """
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
         self.X_li = [] # features
         self.N_li = [] # file Nanes
         self.X = []
         self.N = []
-        self.featu_path = featu_path
+        self.featu_path = os.path.dirname(image_path)
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
             print('Feature layer:', self.fex_tag )
@@ -178,7 +175,6 @@ class FeatureExtractor:
 
     def save_full_features(self):
         """ 
-        Description : Save the full 'array shaped' features as npz with an ID timestamp
         """
         # handle if training was killed early
         self.X = np.concatenate(self.X_li)
@@ -188,21 +184,8 @@ class FeatureExtractor:
         np.savez(file = self.out_name, X = self.X, N = self.N)   
 
 
-    def plot_full_features(self, npzfile_full_path = None, n=50):  
-        """
-        Description : 
-        """ 
-        if npzfile_full_path == None:
-            npzfile_full_path = self.out_name
-        npzfile = np.load(os.path.join(npzfile_full_path))
-        X = npzfile['X']
-        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
-        return(px.scatter(data_frame = XS.T, title = npzfile_full_path))     
-    
-    
     def reduce_dimension(self, npzfile_full_path = None, n_neigh = 10, reduced_dim = 8):
         """
-        Description : Load full 'array shaped' features from npz, dim-reduce with UMAP, and save as npz file with same ID timestamp
         """
         # take in-class path to npz file if none provided via arguments 
         if npzfile_full_path == None:
@@ -215,8 +198,8 @@ class FeatureExtractor:
         X = npzfile['X']
         N = npzfile['N']
         # make 2d feats needed for plot 
-        self.X_2D  = dim_reduce(X, n_neigh, 2)
-        self.X_red = dim_reduce(X, n_neigh, reduced_dim)
+        self.X_2D  = self._dim_reduce(X, n_neigh, 2)
+        self.X_red = self._dim_reduce(X, n_neigh, reduced_dim)
         # save as npz
         tag_dim_red = "dimred_" + str(reduced_dim) + "_neigh_" + str(n_neigh) + "_"
         file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
@@ -224,9 +207,19 @@ class FeatureExtractor:
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 
 
+    def plot_full_features(self, npzfile_full_path = None, n=50):  
+        """
+        """ 
+        if npzfile_full_path == None:
+            npzfile_full_path = self.out_name
+        npzfile = np.load(os.path.join(npzfile_full_path))
+        X = npzfile['X']
+        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
+        return(px.scatter(data_frame = XS.T, title = npzfile_full_path))     
+    
+
     def plot_reduced_features(self, npzfile_reduced_path = None, n=50):  
         """
-        Description : 
         """ 
         if npzfile_reduced_path == None:
             npzfile_reduced_path = self.out_name_reduced
