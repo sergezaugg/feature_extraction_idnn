@@ -137,14 +137,14 @@ class FeatureExtractor:
         _ = self.extractor.eval()
 
 
-    def extract(self, image_path, featu_path, freq_pool, batch_size, n_batches = 2):
+    def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
         self.X_li = [] # features
         self.N_li = [] # file Nanes
         self.X = []
         self.N = []
-        self.featu_path = featu_path
+        self.featu_path = os.path.dirname(image_path)
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
             print('Feature layer:', self.fex_tag )
