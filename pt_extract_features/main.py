@@ -9,7 +9,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()
 
 # set path   
-image_source_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
+image_source_path = "./dev_data/images"
 
 # feature extraction and dim reduction
 fe = FeatureExtractor(model_tag = "ResNet50")
