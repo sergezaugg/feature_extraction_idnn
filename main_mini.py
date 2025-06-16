@@ -1,10 +1,10 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : A short script to illustrate usage of pt_extract_features.utils_ml.FeatureExtractor
+# Description : A short script to illustrate usage of utils_ml.FeatureExtractor
 #--------------------
 
 import torch
-from pt_extract_features.utils_ml import FeatureExtractor
+from utils_ml import FeatureExtractor
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()
 

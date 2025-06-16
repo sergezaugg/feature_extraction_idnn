@@ -28,10 +28,9 @@
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
 ### Usage
-* Code is in this subdir ```./pt_extract_features```
 * Main functionality called via a single class **FeatureExtractor** defined is in ```utils_ml.py```
-* Short example: ```main_mini.py```
-* Full example: ```main_batch.py```
+* Illustration with short interactive script here: ```main_mini.py```
+* Batch process with CLI tool, example: ```python main_batch.py -i "./dev_data/images" -n 31```
 
 ### ML details
 <img src="pics/spectro_imDNN_data_flow.png" alt="Example image" width="600"/>
