@@ -18,22 +18,41 @@ import skimage.measure
 from torchvision.models.feature_extraction import create_feature_extractor
 from torchvision.models.feature_extraction import get_graph_node_names
 
+
+
 class ImageDataset(Dataset):
     """
-    Description: A simple PyTorch dataset (loader) to batch process images from file
+    This PyTorch dataset loads PNG images from a specified directory, applies given preprocessing
+    transforms, and returns the processed image along with its filename. It is designed
+    to be used with PyTorch's DataLoader for batching and shuffling.
+    Attributes:
+        all_img_files (np.ndarray): Array of PNG image filenames in the provided directory.
+        imgpath (str): Path to the directory containing PNG images.
+        preprocess (callable): Preprocessing transforms (e.g., torchvision presets) to apply to the images.
     """
+    
     def __init__(self, imgpath, preprocess):
         """
-        imgpath (str) : path to a dir that contains JPG images. 
-        label_path (str) : path to a csv file which matches PNG filenames with labels
-        preprocess ('torchvision.transforms._presets.ImageClassification'>) : preprocessing transforms provided with the pretrained models
+        Initializes the ImageDataset.
+        Args:
+            imgpath (str): Path to the directory containing PNG images.
+            preprocess (callable): Preprocessing transforms to apply to the images.
+                Typically, a torchvision.transforms.
         """
         self.all_img_files = np.array([a for a in os.listdir(imgpath) if '.png' in a])
         self.imgpath = imgpath   
         self.preprocess = preprocess  
    
-
-    def __getitem__(self, index):     
+    def __getitem__(self, index):
+        """
+        Retrieves and preprocesses an image at the specified index.
+        Args:
+            index (int): Index of the image to retrieve.
+        Returns:
+            tuple:
+                img (Tensor): The preprocessed image tensor.
+                filename (str): The filename of the image.
+        """     
         img = decode_image(os.path.join(self.imgpath,  self.all_img_files[index]))  
         # Apply inference preprocessing transforms
         if self.preprocess is not None:
@@ -43,15 +62,27 @@ class ImageDataset(Dataset):
         return (img, filename)
     
     def __len__(self):
+        """
+        Returns the total number of images in the dataset.
+        """
         return (len(self.all_img_files))
     
 
 class FeatureExtractor:
     """
+    A class for extracting, saving, and visualizing deep features from images using pretrained models.
+    This class provides methods to initialize various pretrained models, extract features from images,
+    perform dimensionality reduction, and visualize both the full and reduced feature sets.
     """
 
     def __init__(self, model_tag):
         """
+        Initializes the FeatureExtractor with the specified pretrained model.
+
+        Args:
+            model_tag (str): Tag specifying which pretrained model to use.
+                Supported tags include "ResNet50", "DenseNet121", "MobileNet_V3_Large",
+                "MobileNet_randinit", "vgg16", "Vit_b_16", "MaxVit_T", "Swin_S".
         """
         self.model_tag = model_tag
         self.model, weights = self._load_pretraind_model(model_tag)
@@ -61,6 +92,11 @@ class FeatureExtractor:
 
     def _load_pretraind_model(self, model_tag):
         """
+        Loads a specified pretrained model and its weights.
+        Args:
+            model_tag (str): Tag specifying which pretrained model to load.
+        Returns:
+            tuple: (model (torch.nn.Module), weights (torchvision.models.Weights)) 
         """
         if model_tag == "ResNet50":
             from torchvision.models import resnet50, ResNet50_Weights
@@ -102,6 +138,13 @@ class FeatureExtractor:
 
     def _dim_reduce(self, X, n_neigh, n_dims_red):
         """
+        Performs dimensionality reduction on the input feature array using UMAP.
+        Args:
+            X (np.ndarray): The input feature array.
+            n_neigh (int): Number of neighbors to use in UMAP.
+            n_dims_red (int): Target dimensions for reduction.
+        Returns:
+            np.ndarray: The dimensionally reduced feature array.
         """
         scaler = StandardScaler()
         reducer = umap.UMAP(
@@ -118,6 +161,9 @@ class FeatureExtractor:
 
     def create(self, fex_tag):  
         """
+        Creates a feature extractor for the specified node in the model, saved as attribute self.extractor
+        Args:
+            fex_tag (str): The name of the feature node (inner layer) from the model to use for feature extraction
         """   
         return_nodes = {fex_tag: "feature_1"}
         self.extractor = create_feature_extractor(self.model, return_nodes=return_nodes)
@@ -127,6 +173,14 @@ class FeatureExtractor:
 
     def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         """
+        Extracts array-features from images in 'image_path', processes these array and applies pooling, and saves the features.
+        Args:
+            image_path (str): Path to directory containing images.
+            freq_pool (int): Pooling window size along the frequency axis.
+            batch_size (int): Number of images per batch.
+            n_batches (int, optional): Number of batches to process (default is 2).
+        Side Effects:
+            Saves the extracted features and corresponding filenames as a .npz file in the parent of image directory.
         """
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
@@ -175,6 +229,8 @@ class FeatureExtractor:
 
     def save_full_features(self):
         """ 
+        Concatenates and saves the extracted features and filenames in .npz format.
+        This method is meant to manually save features if extraction with .extract() was interrupted.
         """
         # handle if training was killed early
         self.X = np.concatenate(self.X_li)
@@ -186,6 +242,14 @@ class FeatureExtractor:
 
     def reduce_dimension(self, npzfile_full_path = None, n_neigh = 10, reduced_dim = 8):
         """
+        Reduces the dimension of saved features using UMAP and saves the reduced features.
+        Also always makes a 2d reduced version that is used for plotting.
+        Args:
+            npzfile_full_path (str, optional): Full path to the .npz file with full features.
+            n_neigh (int, optional): Number of neighbors for UMAP (default is 10).
+            reduced_dim (int, optional): Target dimension for reduction (default is 8).
+        Side Effects:
+            Saves the reduced-dim and 2D features in a .npz file.
         """
         # take in-class path to npz file if none provided via arguments 
         if npzfile_full_path == None:
@@ -209,6 +273,12 @@ class FeatureExtractor:
 
     def plot_full_features(self, npzfile_full_path = None, n=50):  
         """
+        Plots a scatter plot of a smaller sample of the full features, to assess feature disto
+        Args:
+            npzfile_full_path (str, optional): Path to the .npz file with features to plot.
+            n (int, optional): Number of samples to plot (default is 50).
+        Returns:
+            plotly.graph_objs._figure.Figure: The scatter plot figure object.
         """ 
         if npzfile_full_path == None:
             npzfile_full_path = self.out_name
@@ -220,6 +290,12 @@ class FeatureExtractor:
 
     def plot_reduced_features(self, npzfile_reduced_path = None, n=50):  
         """
+        Plots a scatter plot of a sample of the dimensionally reduced features.
+        Args:
+            npzfile_reduced_path (str, optional): Path to the .npz file with reduced features to plot.
+            n (int, optional): Number of samples to plot (default is 50).
+        Returns:
+            plotly.graph_objs._figure.Figure: The scatter plot figure object.
         """ 
         if npzfile_reduced_path == None:
             npzfile_reduced_path = self.out_name_reduced
