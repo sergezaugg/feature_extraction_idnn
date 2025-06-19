@@ -18,22 +18,50 @@ import skimage.measure
 from torchvision.models.feature_extraction import create_feature_extractor
 from torchvision.models.feature_extraction import get_graph_node_names
 
+
+
+
+
+
+
+
+
+# <<<<<<<<<<<<<<<<<<<<<<<
+
 class ImageDataset(Dataset):
     """
-    Description: A simple PyTorch dataset (loader) to batch process images from file
+    This dataset loads PNG images from a specified directory, applies given preprocessing
+    transforms, and returns the processed image along with its filename. It is designed
+    to be used with PyTorch's DataLoader for batching and shuffling.
+
+    Attributes:
+        all_img_files (np.ndarray): Array of PNG image filenames in the provided directory.
+        imgpath (str): Path to the directory containing PNG images.
+        preprocess (callable): Preprocessing transforms (e.g., torchvision presets) to apply to the images.
     """
+    
     def __init__(self, imgpath, preprocess):
         """
-        imgpath (str) : path to a dir that contains JPG images. 
-        label_path (str) : path to a csv file which matches PNG filenames with labels
-        preprocess ('torchvision.transforms._presets.ImageClassification'>) : preprocessing transforms provided with the pretrained models
+        Initializes the ImageDataset.
+        Args:
+            imgpath (str): Path to the directory containing PNG images.
+            preprocess (callable): Preprocessing transforms to apply to the images.
+                Typically, a torchvision.transforms.
         """
         self.all_img_files = np.array([a for a in os.listdir(imgpath) if '.png' in a])
         self.imgpath = imgpath   
         self.preprocess = preprocess  
    
-
-    def __getitem__(self, index):     
+    def __getitem__(self, index):
+        """
+        Retrieves and preprocesses an image at the specified index.
+        Args:
+            index (int): Index of the image to retrieve.
+        Returns:
+            tuple:
+                img (Tensor): The preprocessed image tensor.
+                filename (str): The filename of the image.
+        """     
         img = decode_image(os.path.join(self.imgpath,  self.all_img_files[index]))  
         # Apply inference preprocessing transforms
         if self.preprocess is not None:
@@ -43,6 +71,9 @@ class ImageDataset(Dataset):
         return (img, filename)
     
     def __len__(self):
+        """
+        Returns the total number of images in the dataset.
+        """
         return (len(self.all_img_files))
     
 
