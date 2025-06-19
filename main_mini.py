@@ -13,8 +13,15 @@ image_source_path = "./dev_data/images"
 
 # feature extraction and dim reduction
 fe = FeatureExtractor(model_tag = "ResNet50")
+fe.model
+
 fe.eval_nodes
 fe.create("layer1.2.conv3")
+fe.create("layer2.3.conv3")
+fe.create("layer3.5.conv3")
+fe.create("layer4.2.conv3")
+fe.extractor
+
 fe.extract(image_source_path, freq_pool = 4, batch_size = 16, n_batches = 50)
 fe.save_full_features() # only needed if fe.extract was interrupted
 fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
