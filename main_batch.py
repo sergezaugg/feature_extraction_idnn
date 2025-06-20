@@ -3,8 +3,8 @@
 # Description : A python cli tool to keep track and reproduce feature extraction history
 # Applies utils_ml.FeatureExtractor with several models and params
 # Usage example: python main_batch.py -i "D:/xc_real_projects/xc_sw_europe/xc_spectrograms" -n 21
-# Usage example spec:  python main_batch.py -i "D:/xc_real_projects/xc_sw_europe/xc_spectrograms" -n 1000000
-# Usage example spec:  python main_batch.py -i "D:/xc_real_projects/xc_parus_01/xc_spectrograms" -n 1000000
+# spec example:  python main_batch.py -i "D:/xc_real_projects/xc_sw_europe/xc_spectrograms" -n 1000000
+# spec example:  python main_batch.py -i "D:/xc_real_projects/xc_parus_01/xc_spectrograms" -n 1000000
 # Usage example: python main_batch.py -i "./dev_data/images" -n 31
 #--------------------
 
@@ -62,7 +62,7 @@ fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches, ec
 fe = FeatureExtractor(model_tag = "ResNet50")
 fe.eval_nodes
 fe.create("layer4.2.conv3")
-fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches, ecut = 1)
+fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches, ecut = 0)
 [fe.reduce_dimension(n_neigh = 10, reduced_dim = d) for d in [2,4,8,16]]
 
 fe = FeatureExtractor(model_tag = "DenseNet121")
