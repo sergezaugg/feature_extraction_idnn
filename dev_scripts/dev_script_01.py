@@ -32,8 +32,8 @@ fe.extract(image_source_path, freq_pool = 4, batch_size = 16, n_batches = 2, ecu
 
 fe.extract(image_source_path, fe_save_path = "C:/Users/sezau/Downloads/aaa",  freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
 
-
 fe.save_full_features() # only needed if fe.extract was interrupted
+
 fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
 
 # explore resulting arrays
