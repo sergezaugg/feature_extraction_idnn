@@ -170,7 +170,7 @@ class FeatureExtractor:
         _ = self.extractor.eval()
 
 
-    def extract(self, image_path, freq_pool, batch_size, n_batches = 2, ecut = 0):
+    def extract(self, image_path, freq_pool, batch_size, n_batches = 2, ecut = 0, fe_save_path = None):
         """
         Extracts array-features from images in 'image_path', processes these array and applies pooling, and saves the features.
         Args:
@@ -188,7 +188,12 @@ class FeatureExtractor:
         self.N_li = [] # file Nanes
         self.X = []
         self.N = []
-        self.featu_path = os.path.dirname(image_path)
+        # define where extracted features will be saved
+        if fe_save_path is None: # save to parent of image directory
+            self.featu_path = os.path.dirname(image_path)
+        else: # save to custom dir 
+            self.featu_path = fe_save_path
+        # loop over images 
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
             print('Feature layer:', self.fex_tag )
