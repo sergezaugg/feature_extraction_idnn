@@ -8,13 +8,13 @@ include = ["fe_idnn*"]
 
 [project]
 name = "fe_idnn" 
-version = "v0.0.4"
+version = "v0.0.5"
 dependencies = [
-    "pandas==2.3.0",
-    "plotly==6.1.2",
-    "scikit-image==0.25.2",
-    "scikit-learn==1.7.0",
-    "umap-learn==0.5.7",
+    "pandas>=2.3.0",
+    "plotly>=6.1.2",
+    "scikit-image>=0.25.2",
+    "scikit-learn>=1.7.0",
+    "umap-learn>=0.5.7",
 ]
 authors = [
   { name="Serge Zaugg", email="author@example.com" },
