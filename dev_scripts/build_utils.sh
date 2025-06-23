@@ -8,11 +8,9 @@ python -m build
 
 
 
-
-
 pip uninstall fe_idnn 
 
-pip install --upgrade dist/fe_idnn-0.0.1.2-py3-none-any.whl
+pip install --upgrade dist/fe_idnn-0.0.2-py3-none-any.whl
 
 pip install --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu126
 
