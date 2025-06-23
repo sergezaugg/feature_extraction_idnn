@@ -2,14 +2,12 @@ __pycache__
 extracted_features
 *.npz
 
-
 *.egg-info
 /tests_temp/
 /__pycache__/xco.cpython-312.pyc
 /__pycache__/tests.cpython-312.pyc
 __pycache__
 temp_xc_project
-
 
 # Distribution / packaging
 .Python

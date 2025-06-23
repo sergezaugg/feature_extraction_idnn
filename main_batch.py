@@ -37,7 +37,7 @@ print('n_batches', n_batches)
 # main process starts here 
 print("Activating session ...")
 import torch
-from fe_idnn import FeatureExtractor
+from src.fe_idnn import FeatureExtractor
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

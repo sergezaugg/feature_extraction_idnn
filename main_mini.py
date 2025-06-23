@@ -4,7 +4,7 @@
 #--------------------
 
 import torch
-from fe_idnn import FeatureExtractor
+from src.fe_idnn import FeatureExtractor
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()
 

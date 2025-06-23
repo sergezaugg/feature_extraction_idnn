@@ -3,12 +3,12 @@ requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
       
 [tool.setuptools.packages.find]
-where = ["."]  
+where = ["src"]  
 include = ["fe_idnn*"]  
 
 [project]
 name = "fe_idnn" 
-version = "v0.0.1"
+version = "v0.0.1.2"
 dependencies = [
     "pandas==2.3.0",
     "plotly==6.1.2",
@@ -33,5 +33,3 @@ license-files = ["LICEN[CS]E*"]
 Homepage = "https://github.com/sergezaugg/feature_extraction_idnn"
 Issues = "https://github.com/sergezaugg/feature_extraction_idnn/issues"
 
-[tool.setuptools.package-data]
-"xeno_canto_organizer.sample_json" = ["*.json"]
