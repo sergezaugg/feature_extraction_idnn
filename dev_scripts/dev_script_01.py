@@ -9,7 +9,7 @@ import torch
 from src.fe_idnn.tools import FeatureExtractor
 
 # usage (must 'pip install' first)
-from fe_idnn.tools import FeatureExtractor, ImageDataset
+from fe_idnn.tools import FeatureExtractor
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()

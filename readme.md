@@ -24,7 +24,7 @@
 * ```pip install -r requirements.txt```
 * **torch** and **torchvision** must also be installed
 * This code was developed under Windows with CUDA 12.6 and Python 3.12.8 
-* ```pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126```
+* ```pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126```
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
 ### Usage
