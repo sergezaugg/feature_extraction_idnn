@@ -19,3 +19,7 @@ pip install --force-reinstall torch torchvision --index-url https://download.pyt
 
 
 
+# numpy.reshape(a, newshape, order='C')
+# numpy.reshape(a, /, shape=None, order='C', *
+
+

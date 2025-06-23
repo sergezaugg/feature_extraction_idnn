@@ -207,7 +207,7 @@ class FeatureExtractor:
             pred = pred.mean(axis=3)
             print('After average pool along time:', pred.shape)
             # unwrap freq int feature dim
-            pred = np.reshape(pred, shape=(pred.shape[0], pred.shape[1]*pred.shape[2]))
+            pred = np.reshape(pred, (pred.shape[0], pred.shape[1]*pred.shape[2]))
             print('After reshape:', pred.shape)
             print("")
             # do it dirty
