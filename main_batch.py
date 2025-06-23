@@ -1,7 +1,7 @@
 #--------------------             
 # Author : Serge Zaugg
 # Description : A python cli tool to keep track and reproduce feature extraction history
-# Applies utils_ml.FeatureExtractor with several models and params
+# Applies FeatureExtractor with several models and params
 # Usage example: python main_batch.py -i "D:/xc_real_projects/xc_sw_europe/xc_spectrograms" -n 21
 # spec example:  python main_batch.py -i "D:/xc_real_projects/xc_sw_europe/xc_spectrograms" -n 1000000
 # spec example:  python main_batch.py -i "D:/xc_real_projects/xc_parus_01/xc_spectrograms" -n 1000000
@@ -37,7 +37,7 @@ print('n_batches', n_batches)
 # main process starts here 
 print("Activating session ...")
 import torch
-from utils_ml import FeatureExtractor
+from fe_idnn import FeatureExtractor
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
