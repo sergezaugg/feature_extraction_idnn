@@ -1,9 +1,3 @@
-
-# CPU pytorch
-# torch from https://pypi.org/
-torch==2.7.1
-torchvision==0.22.1
-# pypi pkgs
 pandas==2.3.0
 plotly==6.1.2
 scikit-image==0.25.2
