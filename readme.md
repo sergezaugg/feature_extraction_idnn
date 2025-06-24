@@ -17,15 +17,15 @@
 * NPZ files can then stored on a Kaggle dataset [(example)](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01) where the [frontend](https://spectrogram-image-clustering.streamlit.app/) will fetch them [(Github repo)](https://github.com/sergezaugg/spectrogram_image_clustering)  
 
 ### Intallation (usage in Python project)
-* Make a fresh venv an install fe_idnn from wheel
-* ```pip install https://github.com/sergezaugg/feature_extraction_idnn/releases/download/v0.9.1b3/fe_idnn-0.0.6-py3-none-any.whl```
+* Make a fresh venv an install fe_idnn from Python package wheel found on [this github repo](https://github.com/sergezaugg/feature_extraction_idnn/releases)
+* ```pip install https://github.com/sergezaugg/feature_extraction_idnn/releases/download/vx.x.x/fe_idnn-x.x.x-py3-none-any.whl```
 * **torch** and **torchvision** must be installed separately for specific CUDA version
 * ```pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126``` (e.g. for Windows with CUDA 12.6 and Python 3.12.8)
 * If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
 ### Intallation (usage in Kaggle notebook)
 * On Kaggle packages are already installed, for notebooks try this:
-* ```!pip install --no-deps https://github.com/sergezaugg/feature_extraction_idnn/releases/download/v0.9.1b3/fe_idnn-0.0.6-py3-none-any.whl```
+* ```!pip install --no-deps https://github.com/sergezaugg/feature_extraction_idnn/releases/download/vx.x.x/fe_idnn-x.x.x-py3-none-any.whl```
 
 ### Intallation (development)
 * Clone the repo and navigate to its root dir
