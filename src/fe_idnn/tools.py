@@ -19,7 +19,6 @@ from torchvision.models.feature_extraction import create_feature_extractor
 from torchvision.models.feature_extraction import get_graph_node_names
 
 
-
 class ImageDataset(Dataset):
     """
     This PyTorch dataset loads PNG images from a specified directory, applies given preprocessing
@@ -171,7 +170,7 @@ class FeatureExtractor:
         _ = self.extractor.eval()
 
 
-    def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
+    def extract(self, image_path, freq_pool, batch_size, n_batches = 2, ecut = 0, fe_save_path = None):
         """
         Extracts array-features from images in 'image_path', processes these array and applies pooling, and saves the features.
         Args:
@@ -179,6 +178,7 @@ class FeatureExtractor:
             freq_pool (int): Pooling window size along the frequency axis.
             batch_size (int): Number of images per batch.
             n_batches (int, optional): Number of batches to process (default is 2).
+            ecut (int, >= 0) : nb bins to cut from time edges
         Side Effects:
             Saves the extracted features and corresponding filenames as a .npz file in the parent of image directory.
         """
@@ -188,29 +188,31 @@ class FeatureExtractor:
         self.N_li = [] # file Nanes
         self.X = []
         self.N = []
-        self.featu_path = os.path.dirname(image_path)
+        # define where extracted features will be saved
+        if fe_save_path is None: # save to parent of image directory
+            self.featu_path = os.path.dirname(image_path)
+        else: # save to custom dir 
+            self.featu_path = fe_save_path
+        # loop over images 
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
             print('Feature layer:', self.fex_tag )
             print('Input resized image:', batch.shape)
             # batch = batch.to(torch.float)
             pred = self.extractor(batch)['feature_1'].detach().numpy() 
-            print('Feature out of net:', pred.shape)
+            print('Feature out of net:           ', pred.shape)
             # blockwise pooling along frequency axe 
             pred = skimage.measure.block_reduce(pred, (1,1,freq_pool,1), np.mean)
             print('After average pool along freq:', pred.shape)
-
-            # cutting time edges (currently hard coded to 20% on each side)
-            ecut = np.ceil(0.20 * pred.shape[3]).astype(int)
-            # print('ecut', ecut)
-            pred = pred[:, :, :, ecut:(-1*ecut)] 
-            print('NEW - After cutting time edges:', pred.shape)
-            
+            # cutting time edges
+            if ecut != 0:
+                pred = pred[:, :, :, ecut:(-1*ecut)] 
+            print('After cutting time edges:     ', pred.shape)
             # full average pool over time (do asap to avoid memory issues later)
             pred = pred.mean(axis=3)
             print('After average pool along time:', pred.shape)
             # unwrap freq int feature dim
-            pred = np.reshape(pred, shape=(pred.shape[0], pred.shape[1]*pred.shape[2]))
+            pred = np.reshape(pred, (pred.shape[0], pred.shape[1]*pred.shape[2]))
             print('After reshape:', pred.shape)
             print("")
             # do it dirty
