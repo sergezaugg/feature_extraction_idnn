@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fe_idnn"
-version = "0.9.3.1"
+version = "0.9.4"
 description = "Feature extraction from spectrogram images with pre-trained images DNNs"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -13,7 +13,6 @@ license = {text = "MIT"}
 authors = [{ name="Serge Zaugg"}]
 dependencies = [
     "pandas>=2.3.0",
-    "plotly>=6.1.2",
     "scikit-image>=0.25.2",
     "scikit-learn>=1.7.0",
     "umap-learn>=0.5.7",

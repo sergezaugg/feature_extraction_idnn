@@ -11,8 +11,7 @@ import datetime
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
-import plotly.express as px
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 import umap.umap_ as umap
 import skimage.measure
 from torchvision.models.feature_extraction import create_feature_extractor
@@ -273,36 +272,8 @@ class IDNN_extractor:
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 
 
-    def plot_full_features(self, npzfile_full_path = None, n=50):  
-        """
-        Plots a scatter plot of a smaller sample of the full features, to assess feature disto
-        Args:
-            npzfile_full_path (str, optional): Path to the .npz file with features to plot.
-            n (int, optional): Number of samples to plot (default is 50).
-        Returns:
-            plotly.graph_objs._figure.Figure: The scatter plot figure object.
-        """ 
-        if npzfile_full_path == None:
-            npzfile_full_path = self.out_name
-        npzfile = np.load(os.path.join(npzfile_full_path))
-        X = npzfile['X']
-        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
-        return(px.scatter(data_frame = XS.T, title = npzfile_full_path))     
+ 
     
 
-    def plot_reduced_features(self, npzfile_reduced_path = None, n=50):  
-        """
-        Plots a scatter plot of a sample of the dimensionally reduced features.
-        Args:
-            npzfile_reduced_path (str, optional): Path to the .npz file with reduced features to plot.
-            n (int, optional): Number of samples to plot (default is 50).
-        Returns:
-            plotly.graph_objs._figure.Figure: The scatter plot figure object.
-        """ 
-        if npzfile_reduced_path == None:
-            npzfile_reduced_path = self.out_name_reduced
-        npzfile = np.load(os.path.join(npzfile_reduced_path))
-        X = npzfile['X_red']
-        XS, _ = train_test_split(X, train_size=n, random_state=6666, shuffle=True)
-        return(px.scatter(data_frame = XS.T, title = npzfile_reduced_path))     
+  
 

@@ -38,8 +38,7 @@ fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
 
 # explore resulting arrays
 print(fe.N.shape, fe.X.shape, fe.X_red.shape, fe.X_2D.shape,)
-fe.plot_full_features(n=20).show()
-fe.plot_reduced_features(n=20).show()
+
 
 
 

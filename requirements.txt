@@ -1,5 +1,4 @@
 pandas==2.3.0
-plotly==6.1.2
 scikit-image==0.25.2
 scikit-learn==1.7.0
 umap-learn==0.5.7
