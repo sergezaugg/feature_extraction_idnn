@@ -4,7 +4,8 @@
 #--------------------
 
 import torch
-from fe_idnn.tools import IDNN_extractor
+from fe_idnn import IDNN_extractor
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # set path   
