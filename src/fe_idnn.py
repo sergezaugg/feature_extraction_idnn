@@ -223,8 +223,8 @@ class IDNN_extractor:
         self.X = np.concatenate(self.X_li)
         self.N = np.concatenate(self.N_li)
         # save the full 'array shaped' features as npz with a ID timestamp
-        tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
-        self.out_name = os.path.join(self.featu_path, tstmp + 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
+        # tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
+        self.out_name = os.path.join(self.featu_path, 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
         np.savez(file = self.out_name, X = self.X, N = self.N)   
 
 
@@ -236,8 +236,8 @@ class IDNN_extractor:
         # handle if training was killed early
         self.X = np.concatenate(self.X_li)
         self.N = np.concatenate(self.N_li)
-        tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
-        self.out_name = os.path.join(self.featu_path, tstmp + 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
+        # tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
+        self.out_name = os.path.join(self.featu_path, 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
         np.savez(file = self.out_name, X = self.X, N = self.N)   
 
 
