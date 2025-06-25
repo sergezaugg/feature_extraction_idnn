@@ -1,14 +1,16 @@
+# Build setup to make package with single module 
 [build-system]
-requires = ["setuptools >= 77.0.3"]
-build-backend = "setuptools.build_meta"
-      
-[tool.setuptools.packages.find]
-where = ["src"]  
-include = ["fe_idnn*"]  
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "fe_idnn" 
-version = "v0.9.2"
+name = "fe_idnn"
+version = "0.9.3"
+description = "Feature extraction from spectrogram images with pre-trained images DNNs"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{ name="Serge Zaugg"}]
 dependencies = [
     "pandas>=2.3.0",
     "plotly>=6.1.2",
@@ -16,20 +18,20 @@ dependencies = [
     "scikit-learn>=1.7.0",
     "umap-learn>=0.5.7",
 ]
-authors = [
-  { name="Serge Zaugg", email="author@example.com" },
-]
-description = "feature extraction from spectrogram images with pre-trained images DNNs"
-readme = "README.md"
-requires-python = ">=3.11"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
+
+[tool.hatch.build]
+sources = ["src"]
+
+# This is the key for a single-file module:
+[tool.hatch.build.targets.wheel]
+include = ["fe_idnn.py"]
 
 [project.urls]
 Homepage = "https://github.com/sergezaugg/feature_extraction_idnn"
 Issues = "https://github.com/sergezaugg/feature_extraction_idnn/issues"
+
+
+
+
+
 
