@@ -267,7 +267,9 @@ class IDNN_extractor:
         self.X_red = self._dim_reduce(X, n_neigh, reduced_dim)
         # save as npz
         tag_dim_red = "dimred_" + str(reduced_dim) + "_neigh_" + str(n_neigh) + "_"
-        file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
+        # file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
+        file_name_out = tag_dim_red + '_'.join(file_name_in.split('_')[2:])
+
         self.out_name_reduced = os.path.join(featu_path, file_name_out)
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 

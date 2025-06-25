@@ -8,8 +8,8 @@ import torch
 # devel
 from src.fe_idnn import IDNN_extractor
 
-# usage (must 'pip install' first)
-from fe_idnn import IDNN_extractor
+# # usage (must 'pip install' first)
+# from fe_idnn import IDNN_extractor
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()
