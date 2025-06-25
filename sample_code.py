@@ -4,13 +4,14 @@
 #--------------------
 
 import torch
-from fe_idnn.tools import FeatureExtractor
+from fe_idnn import IDNN_extractor
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # set path   
 image_source_path = "./dev_data/images"
 # initialize instance of feature extraction and dim reduction
-fe = FeatureExtractor(model_tag = "ResNet50")
+fe = IDNN_extractor(model_tag = "ResNet50")
 # (optional) check model architecture
 fe.model
 fe.eval_nodes
@@ -23,8 +24,7 @@ fe.save_full_features() # only needed if fe.extract was interrupted
 fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
 # (optional) explore resulting arrays
 print(fe.N.shape, fe.X.shape, fe.X_red.shape, fe.X_2D.shape,)
-fe.plot_full_features(n=20).show()
-fe.plot_reduced_features(n=20).show()
+
 
 
 
