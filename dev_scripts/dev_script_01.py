@@ -22,19 +22,18 @@ fe = IDNN_extractor(model_tag = "ResNet50")
 fe.model
 
 fe.eval_nodes
-fe.create("layer1.2.conv3")
 fe.create("layer2.3.conv3")
-fe.create("layer3.5.conv3")
-fe.create("layer4.2.conv3")
 fe.extractor
 
 fe.extract(image_source_path, freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
+
+fe.X.shape
 
 fe.extract(image_source_path, fe_save_path = "C:/Users/sezau/Downloads",  freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
 
 fe.save_full_features() # only needed if fe.extract was interrupted
 
-fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
+fe.reduce_dimension(n_neigh = 10, reduced_dim = 16)
 
 # explore resulting arrays
 print(fe.N.shape, fe.X.shape, fe.X_red.shape, fe.X_2D.shape,)
