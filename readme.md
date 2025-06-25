@@ -4,13 +4,13 @@
 ### Overview
 * Primarily developed for acoustic recordings from [xeno-canto](https://xeno-canto.org/)
 * Download of mp3 and conversion to spectrograms as RGB images can be performed with [this tool](https://github.com/sergezaugg/xeno_canto_organizer)  
-* Images can then be processed with the **FeatureExtractor** class provided here
+* Images can then be processed with the **IDNN_extractor** class provided here
 * First, extract array features from inner layers of pre-trained image DNNs and transform to long linear features
 * Second, dim reduce the linear features with UMAP to shorter feature vectors
 * Full and reduced-dim features as stored as NPZ files
 
 ### Usage
-* Main functionality called via a single class **FeatureExtractor**
+* Main functionality called via a single class **IDNN_extractor**
 * Illustration with short interactive script [sample_code.py](sample_code.py)
 
 ### Companion project

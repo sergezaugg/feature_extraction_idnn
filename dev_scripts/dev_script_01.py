@@ -6,10 +6,10 @@
 import torch
 
 # devel
-from src.fe_idnn.tools import FeatureExtractor
+from src.fe_idnn import IDNN_extractor
 
 # usage (must 'pip install' first)
-from fe_idnn.tools import FeatureExtractor
+from fe_idnn import IDNN_extractor
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()
@@ -18,7 +18,7 @@ torch.cuda.is_available()
 image_source_path = "./dev_data/images"
 
 # feature extraction and dim reduction
-fe = FeatureExtractor(model_tag = "ResNet50")
+fe = IDNN_extractor(model_tag = "ResNet50")
 fe.model
 
 fe.eval_nodes
@@ -30,7 +30,7 @@ fe.extractor
 
 fe.extract(image_source_path, freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
 
-fe.extract(image_source_path, fe_save_path = "C:/Users/sezau/Downloads/aaa",  freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
+fe.extract(image_source_path, fe_save_path = "C:/Users/sezau/Downloads",  freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
 
 fe.save_full_features() # only needed if fe.extract was interrupted
 

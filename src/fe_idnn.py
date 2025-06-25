@@ -67,7 +67,7 @@ class ImageDataset(Dataset):
         return (len(self.all_img_files))
     
 
-class FeatureExtractor:
+class IDNN_extractor:
     """
     A class for extracting, saving, and visualizing deep features from images using pretrained models.
     This class provides methods to initialize various pretrained models, extract features from images,
@@ -76,7 +76,7 @@ class FeatureExtractor:
 
     def __init__(self, model_tag):
         """
-        Initializes the FeatureExtractor with the specified pretrained model.
+        Initializes the IDNN_extractor with the specified pretrained model.
 
         Args:
             model_tag (str): Tag specifying which pretrained model to use.

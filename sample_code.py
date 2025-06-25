@@ -4,13 +4,13 @@
 #--------------------
 
 import torch
-from fe_idnn.tools import FeatureExtractor
+from fe_idnn.tools import IDNN_extractor
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # set path   
 image_source_path = "./dev_data/images"
 # initialize instance of feature extraction and dim reduction
-fe = FeatureExtractor(model_tag = "ResNet50")
+fe = IDNN_extractor(model_tag = "ResNet50")
 # (optional) check model architecture
 fe.model
 fe.eval_nodes
