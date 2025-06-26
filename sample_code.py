@@ -24,7 +24,7 @@ fe.extract(image_path = image_source_path, fe_save_path = feature_save_path,  fr
 # only needed if fe.extract was interrupted:
 fe.save_full_features() 
 # apply UMAP to reduce dim
-fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
+fe.reduce_dimension(n_neigh = 10, reduced_dim = 48)
 # (optional) explore resulting arrays
 print(fe.N.shape, fe.X.shape, fe.X_red.shape, fe.X_2D.shape,)
 
