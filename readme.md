@@ -11,7 +11,7 @@
 
 ### Usage
 * Main functionality called via a single class **IDNN_extractor**
-* Illustration with short interactive script [sample_code.py](sample_code.py)
+* Illustration with short interactive script [sample_code_mini.py](sample_code_mini.py)
 
 ### Companion project
 * NPZ files can then stored on a Kaggle dataset [(example)](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01) where the [frontend](https://spectrogram-image-clustering.streamlit.app/) will fetch them [(Github repo)](https://github.com/sergezaugg/spectrogram_image_clustering)  

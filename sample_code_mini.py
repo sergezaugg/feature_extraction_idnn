@@ -27,12 +27,3 @@ fe.save_full_features()
 fe.reduce_dimension(n_neigh = 10, reduced_dim = 48)
 # (optional) explore resulting arrays
 print(fe.N.shape, fe.X.shape, fe.X_red.shape, fe.X_2D.shape,)
-
-
-
-
-
-
-
-
-
