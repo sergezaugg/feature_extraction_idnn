@@ -7,11 +7,10 @@ import os
 import pandas as pd
 import numpy as np
 import torch
-import datetime
+# import datetime
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
-# from sklearn.model_selection import train_test_split
 import umap.umap_ as umap
 import skimage.measure
 from torchvision.models.feature_extraction import create_feature_extractor
@@ -169,7 +168,7 @@ class IDNN_extractor:
         _ = self.extractor.eval()
 
 
-    def extract(self, image_path, freq_pool, batch_size, n_batches = 2, ecut = 0, fe_save_path = None):
+    def extract(self, image_path, fe_save_path, freq_pool, batch_size, n_batches = 2, ecut = 0):
         """
         Extracts array-features from images in 'image_path', processes these array and applies pooling, and saves the features.
         Args:
@@ -188,10 +187,7 @@ class IDNN_extractor:
         self.X = []
         self.N = []
         # define where extracted features will be saved
-        if fe_save_path is None: # save to parent of image directory
-            self.featu_path = os.path.dirname(image_path)
-        else: # save to custom dir 
-            self.featu_path = fe_save_path
+        self.featu_path = fe_save_path
         # loop over images 
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )

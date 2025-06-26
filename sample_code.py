@@ -18,8 +18,9 @@ fe.eval_nodes
 # create the feature extractor
 fe.create("layer3.5.conv3")
 # extract features from images
-fe.extract(image_source_path, freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
-fe.save_full_features() # only needed if fe.extract was interrupted
+fe.extract(image_path = image_source_path, fe_save_path = "C:/Users/sezau/Downloads",  freq_pool = 4, batch_size = 16, n_batches = 2, ecut = 1)
+# only needed if fe.extract was interrupted:
+fe.save_full_features() 
 # apply UMAP to reduce dim
 fe.reduce_dimension(n_neigh = 10, reduced_dim = 8)
 # (optional) explore resulting arrays
