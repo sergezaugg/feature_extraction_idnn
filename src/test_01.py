@@ -1,7 +1,7 @@
 
 
 import torch
-from src.fe_idnn import IDNN_extractor
+from fe_idnn import IDNN_extractor
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.cuda.is_available()
@@ -27,3 +27,7 @@ def test_03():
 
 def test_04():
     assert fe.X_2D.shape == (64, 2)
+
+
+
+
