@@ -7,11 +7,10 @@ import os
 import pandas as pd
 import numpy as np
 import torch
-import datetime
+# import datetime
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
-# from sklearn.model_selection import train_test_split
 import umap.umap_ as umap
 import skimage.measure
 from torchvision.models.feature_extraction import create_feature_extractor
@@ -169,7 +168,7 @@ class IDNN_extractor:
         _ = self.extractor.eval()
 
 
-    def extract(self, image_path, freq_pool, batch_size, n_batches = 2, ecut = 0, fe_save_path = None):
+    def extract(self, image_path, fe_save_path, freq_pool, batch_size, n_batches = 2, ecut = 0):
         """
         Extracts array-features from images in 'image_path', processes these array and applies pooling, and saves the features.
         Args:
@@ -188,10 +187,7 @@ class IDNN_extractor:
         self.X = []
         self.N = []
         # define where extracted features will be saved
-        if fe_save_path is None: # save to parent of image directory
-            self.featu_path = os.path.dirname(image_path)
-        else: # save to custom dir 
-            self.featu_path = fe_save_path
+        self.featu_path = fe_save_path
         # loop over images 
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
@@ -267,7 +263,9 @@ class IDNN_extractor:
         self.X_red = self._dim_reduce(X, n_neigh, reduced_dim)
         # save as npz
         tag_dim_red = "dimred_" + str(reduced_dim) + "_neigh_" + str(n_neigh) + "_"
-        file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
+        # file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
+        file_name_out = tag_dim_red + '_'.join(file_name_in.split('_')[2:])
+
         self.out_name_reduced = os.path.join(featu_path, file_name_out)
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 
