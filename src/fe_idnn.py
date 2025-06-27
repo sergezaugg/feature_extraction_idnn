@@ -237,7 +237,7 @@ class IDNN_extractor:
         np.savez(file = self.out_name, X = self.X, N = self.N)   
 
 
-    def reduce_dimension(self, npzfile_full_path = None, n_neigh = 10, reduced_dim = 8):
+    def reduce_dimension(self, n_neigh = 10, reduced_dim = 8):
         """
         Reduces the dimension of saved features using UMAP and saves the reduced features.
         Also always makes a 2d reduced version that is used for plotting.
@@ -248,9 +248,8 @@ class IDNN_extractor:
         Side Effects:
             Saves the reduced-dim and 2D features in a .npz file.
         """
-        # take in-class path to npz file if none provided via arguments 
-        if npzfile_full_path == None:
-            npzfile_full_path = self.out_name
+        # take in-class path to npz file 
+        npzfile_full_path = self.out_name  
         # separate path and file name
         file_name_in = os.path.basename(npzfile_full_path)  
         featu_path = os.path.dirname(npzfile_full_path)   
