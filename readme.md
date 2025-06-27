@@ -35,14 +35,14 @@
 
 ### Project Structure
 ```
-├── dev_data/           # A few images for dev and sample code
-├── dev_scripts/        # Development scripts
+├── dev/                # data, dirs and scripts for devel
 ├── pics/               # Images for documentation
 ├── src/                # Source code (Python package)
 ├── pyproject.toml      # Build configuration
 ├── README.md           # Project documentation
 ├── requirements.txt    # Python dependencies
-└── sample_code.py      # Example usage script
+├── sample_code_full.py # Example usage script
+└── sample_code_mini.py # Example usage script
 ```
 
 ### ML details
