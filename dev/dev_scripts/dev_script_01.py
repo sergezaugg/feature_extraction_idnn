@@ -19,6 +19,9 @@ feature_save_path = "./dev/dev_outp"
 fe = IDNN_extractor(model_tag = "ResNet50")
 fe.model
 
+# "vgg16"
+# fe.model_tag
+
 fe.eval_nodes
 fe.create("layer2.3.conv3")
 fe.extractor
