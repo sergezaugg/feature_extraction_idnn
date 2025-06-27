@@ -5,9 +5,9 @@ name: install_deps_and_run_tests
 
 on:
   push:
-    branches: [ "main" ] # that's my baby to minimise runs
-  # pull_request:
-  #   branches: [ "main" ] # currently disabled: Please use workflow_dispatch on dev branches for now 
+    branches: [ "devel" ] # ...
+  pull_request:
+    branches: [ "main" ] # .... 
   workflow_dispatch:  
 
 jobs:
