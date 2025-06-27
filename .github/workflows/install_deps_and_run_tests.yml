@@ -8,12 +8,12 @@ on:
     branches: [ "main" ] # that's my baby
   # pull_request:
   #   branches: [ "main" ]
-  # workflow_dispatch:  
+  workflow_dispatch:  
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest , windows-latest]
     strategy:
       fail-fast: false
       matrix:
