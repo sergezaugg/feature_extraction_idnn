@@ -231,7 +231,6 @@ class IDNN_extractor:
         # handle if training was killed early
         self.X = np.concatenate(self.X_li)
         self.N = np.concatenate(self.N_li)
-        # tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
         self.out_name = os.path.join(self.featu_path, 'full_features_' + self.model_tag + '_' + self.fex_tag + '.npz')
         np.savez(file = self.out_name, X = self.X, N = self.N)   
 
@@ -261,9 +260,7 @@ class IDNN_extractor:
         self.X_red = self._dim_reduce(X, n_neigh, reduced_dim)
         # save as npz
         tag_dim_red = "dimred_" + str(reduced_dim) + "_neigh_" + str(n_neigh) + "_"
-        # file_name_out = '_'.join(file_name_in.split('_')[0:2]) + '_' + tag_dim_red + '_'.join(file_name_in.split('_')[4:])
         file_name_out = tag_dim_red + '_'.join(file_name_in.split('_')[2:])
-
         self.out_name_reduced = os.path.join(featu_path, file_name_out)
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 

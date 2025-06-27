@@ -11,7 +11,8 @@
 
 ### Usage
 * Main functionality called via a single class **IDNN_extractor**
-* Illustration with short interactive script [sample_code_mini.py](sample_code_mini.py)
+* Illustration with short a script [sample_code_mini.py](sample_code_mini.py)
+* Examples to extract from several layers here [sample_code_full.py](sample_code_full.py)
 
 ### Companion project
 * NPZ files can then stored on a Kaggle dataset [(example)](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01) where the [frontend](https://spectrogram-image-clustering.streamlit.app/) will fetch them [(Github repo)](https://github.com/sergezaugg/spectrogram_image_clustering)  
@@ -37,9 +38,8 @@
 ```
 ├── dev/                # data, dirs and scripts for devel
 ├── pics/               # Images for documentation
-├── src/                # Source code (Python package)
+├── src/                # Source code (Python package) and unit tests
 ├── pyproject.toml      # Build configuration
-├── README.md           # Project documentation
 ├── requirements.txt    # Python dependencies
 ├── sample_code_full.py # Example usage script
 └── sample_code_mini.py # Example usage script
