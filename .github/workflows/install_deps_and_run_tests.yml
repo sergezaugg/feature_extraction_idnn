@@ -1,13 +1,13 @@
 # This workflow will install Python dependencies, run tests with a variety of Python versions
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python package
+name: install_deps_and_run_tests
 
 on:
   push:
-    branches: [ "main" ] # that's my baby
+    branches: [ "main" ] # that's my baby to minimise runs
   # pull_request:
-  #   branches: [ "main" ]
+  #   branches: [ "main" ] # currently disabled: Please use workflow_dispatch on dev branches for now 
   workflow_dispatch:  
 
 jobs:

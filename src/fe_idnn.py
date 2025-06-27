@@ -214,7 +214,7 @@ class IDNN_extractor:
             self.X_li.append(pred)
             self.N_li.append(np.array(finam))
             # dev
-            if ii > n_batches:
+            if ii >= n_batches-1:
                 break   
         self.X = np.concatenate(self.X_li)
         self.N = np.concatenate(self.N_li)
