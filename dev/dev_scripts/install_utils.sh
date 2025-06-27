@@ -1,3 +1,4 @@
+# a few useful code lines to re-install / uninstall packages
 
 pip uninstall fe_idnn 
 
