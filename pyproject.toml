@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fe_idnn"
-version = "0.9.6"
+version = "0.9.7"
 description = "Feature extraction from spectrogram images with pre-trained images DNNs"
 readme = "README.md"
 requires-python = ">=3.11"
