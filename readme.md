@@ -34,6 +34,9 @@
 * ```pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126``` (for Windows with CUDA 12.6 and Python 3.12.8)
 * If other CUDA version, check instructions here https://pytorch.org/get-started/locally
 
+### External dependencies
+* Instantiation of IDNN_extractor will trigger download of pre-trained models from https://download.pytorch.org/models
+
 ### Project Structure
 ```
 ├── dev/                # data, dirs and scripts for devel
