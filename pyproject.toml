@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fe_idnn"
-version = "0.9.7"
+version = "0.9.8"
 description = "Feature extraction from spectrogram images with pre-trained images DNNs"
-readme = "README.md"
+readme = "readme.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [{ name="Serge Zaugg"}]
