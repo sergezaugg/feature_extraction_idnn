@@ -38,6 +38,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install torch torchvision
           python -m pip install pytest
+          python -m pip install dist/*.whl
+
+      - name: get pip list
+        run: pip list   
 
       - name: Run tests 
         run: |
