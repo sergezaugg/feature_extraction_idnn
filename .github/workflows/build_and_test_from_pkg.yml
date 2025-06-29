@@ -4,8 +4,8 @@
 name: build_and_test_from_pkg
 
 on:
-  # push:
-  #   branches: [main]
+  push:
+    branches: [feat]
   pull_request:
     branches: [main]
   workflow_dispatch:  
