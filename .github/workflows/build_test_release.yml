@@ -10,9 +10,9 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
-  build:
+  build_release_on_new_tag:
 
     runs-on: ubuntu-latest
     strategy:
