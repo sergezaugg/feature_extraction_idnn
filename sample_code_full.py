@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : A simple flat-script to batch-extract features from one dataset with several models 
+# Description : A flat-script to batch-extract features from one dataset with several models 
 #--------------------
 
 import torch

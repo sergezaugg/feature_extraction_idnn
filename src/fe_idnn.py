@@ -264,9 +264,3 @@ class IDNN_extractor:
         self.out_name_reduced = os.path.join(featu_path, file_name_out)
         np.savez(file = self.out_name_reduced, X_red = self.X_red, X_2D = self.X_2D, N = N)
 
-
- 
-    
-
-  
-
