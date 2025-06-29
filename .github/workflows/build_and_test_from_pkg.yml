@@ -27,14 +27,17 @@ jobs:
       - name: Install build and test dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install build pytest
+          python -m pip install build pytest
           python -m pip install torch torchvision
 
       - name: Build project
         run: python -m build
 
       - name: Install built package
-        run: pip install dist/*.whl
+        run: pip install dist/*.whl # only works in bash/linux
+
+        # $whl = Get-ChildItem -Path dist\*.whl | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        # pip install $whl
 
       - name: Run tests with pytest
         run: pytest test/test_build_under_vev.py
