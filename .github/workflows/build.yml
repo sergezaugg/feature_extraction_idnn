@@ -22,7 +22,9 @@ jobs:
       - name: Install build module
         run: python -m pip install --upgrade pip build
 
+      - name: getwd
+        run: getwd()   
+
       - name: Build the package
-        run: getwd()
         run: python -m build
 
