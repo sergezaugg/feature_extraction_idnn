@@ -1,17 +1,12 @@
 # 
 # 
 
-name: build_and_test_package
+name: build_test_release
 
 on:
-  # push:
-  #   branches:
-  #     - feat
-  # push:
-  #   branches: [ "devel" ] # let's trigger the test manually on devel
-  # pull_request:
-  #   branches: [ "main" ] # .... 
-  workflow_dispatch:  
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -62,4 +57,12 @@ jobs:
         run: |
           pytest
 
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
