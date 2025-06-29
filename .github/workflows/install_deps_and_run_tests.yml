@@ -8,7 +8,9 @@ on:
   #   branches: [ "devel" ] # let's trigger the test manually on devel
   pull_request:
     branches: [ "main" ] # .... 
-  workflow_dispatch:  
+  workflow_dispatch: 
+  push:
+    branches: [feat] 
 
 jobs:
   build:
@@ -31,7 +33,20 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install torch torchvision
         python -m pip install pytest
-        pip install -r requirements.txt
-    - name: Test with pytest
-      run: |
-        pytest
+    # pip install -r requirements.txt
+
+    # - name: Test with pytest
+    #   run: |
+    #     pytest
+
+
+    - name: Build project
+      run: python -m build
+
+    - name: Install built package
+      run: pip install dist/*.whl # only works in bash/linux
+      # $whl = Get-ChildItem -Path dist\*.whl | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+      # pip install $whl
+
+    - name: Run tests with pytest
+      run: pytest test/test_build_under_vev.py
