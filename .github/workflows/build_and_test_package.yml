@@ -1,3 +1,5 @@
+# 
+# 
 
 name: build_and_test_package
 
@@ -21,22 +23,12 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
 
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}    
-
-    # steps:
-      # - name: Checkout source code
-        # uses: actions/checkout@v4
-
-      # - name: Set up Python
-        # uses: actions/setup-python@v5
-        # with:
-          # python-version: ${{ matrix.python-version }}
 
       - name: Set up cache for pip
         uses: actions/cache@v4
