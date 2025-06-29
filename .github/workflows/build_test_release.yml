@@ -4,8 +4,9 @@
 name: build_test_release
 
 on:
-  pull_request:
-    branches: [ "main" ] # .... 
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
